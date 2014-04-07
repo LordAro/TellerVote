@@ -4,25 +4,25 @@
 #include <array>
 #include <string>
 
-enum Command {
-	Command_Ident,
-	Command_Begin,
-	Command_Player,
-	Command_Draw,
-	Command_Swap,
-	Command_Played,
-	Command_Reveal,
-	Command_Discard,
-	Command_Out,
-	Command_Protected,
+enum CommandType {
+	CommandType_Ident,
+	CommandType_Begin,
+	CommandType_Player,
+	CommandType_Draw,
+	CommandType_Swap,
+	CommandType_Played,
+	CommandType_Reveal,
+	CommandType_Discard,
+	CommandType_Out,
+	CommandType_Protected,
 
-	Command_Play,
-	Command_Forfeit,
+	CommandType_Play,
+	CommandType_Forfeit,
 
-	Command_Length
+	CommandType_Length
 };
 
-static const std::array<std::string, Command_Length> COMMAND_MAP = {{
+static const std::array<std::string, CommandType_Length> COMMANDTYPE_MAP = {{
 	"ident",
 	"begin",
 	"player",
@@ -37,9 +37,9 @@ static const std::array<std::string, Command_Length> COMMAND_MAP = {{
 	"play",
 	"forfeit"
 }};
-static_assert(COMMAND_MAP.size() == Command_Length, "COMMAND_MAP.size() == Command_Length");
+static_assert(COMMANDTYPE_MAP.size() == CommandType_Length, "COMMANDTYPE_MAP.size() == CommandType_Length");
 
-Command StringToCommand(const std::string &str);
-std::string CommandToString(const Command cmd);
+CommandType StringToCommandType(const std::string &str);
+std::string CommandTypeToString(const CommandType cmd);
 
 #endif /* COMMAND_H */

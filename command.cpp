@@ -2,18 +2,18 @@
 
 #include "command.h"
 
-Command StringToCommand(const std::string &str)
+CommandType StringToCommandType(const std::string &str)
 {
-	auto found = std::find(COMMAND_MAP.begin(), COMMAND_MAP.end(), str);
-	if (found == COMMAND_MAP.end()) return Command_Length;
-	int dist = found - COMMAND_MAP.begin();
-	return static_cast<Command>(dist);
+	auto found = std::find(COMMANDTYPE_MAP.begin(), COMMANDTYPE_MAP.end(), str);
+	if (found == COMMANDTYPE_MAP.end()) return CommandType_Length;
+	int dist = found - COMMANDTYPE_MAP.begin();
+	return static_cast<CommandType>(dist);
 }
 
-std::string CommandToString(const Command cmd)
+std::string CommandTypeToString(const CommandType cmd)
 {
-	if(cmd < Command_Length) {
-		return COMMAND_MAP[cmd];
+	if(cmd < CommandType_Length) {
+		return COMMANDTYPE_MAP[cmd];
 	} else {
 		return nullptr;
 	}

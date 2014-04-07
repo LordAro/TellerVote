@@ -32,11 +32,11 @@ void CommandLoop(int self_id)
 	std::vector<std::string> cmd = GetCommand();
 
 	/* No switch for strings :( */
-	switch (StringToCommand(cmd[0])) {
-		case Command_Reveal:
+	switch (StringToCommandType(cmd[0])) {
+		case CommandType_Reveal:
 			assert(cmd.size() == 3);
 			break;
-		case Command_Out:
+		case CommandType_Out:
 			assert(cmd.size() >= 2 && cmd.size() <= 4);
 			if (std::stoi(cmd[1]) == self_id) {
 				Debug() << "Oh noes, we lost!";
@@ -46,29 +46,29 @@ void CommandLoop(int self_id)
 				// Remove cards from players possibilities
 			}
 			break;
-		case Command_Player:
+		case CommandType_Player:
 			assert(cmd.size() == 2);
 			if (std::stoi(cmd[1]) != self_id) break;
 
 			MakeMove(self_id);
 			break;
-		case Command_Played:
+		case CommandType_Played:
 			assert(cmd.size() >= 2 && cmd.size() <= 5);
 			// Remove played card (cmd[2]) from possibilities
 			break;
-		case Command_Protected:
+		case CommandType_Protected:
 			assert(cmd.size() == 2);
 			Debug() << "Dammit, didn't realise player " << cmd[1] << " was protected";
 			break;
-		case Command_Swap:
+		case CommandType_Swap:
 			assert(cmd.size() == 2);
 			break;
-		case Command_Discard:
+		case CommandType_Discard:
 			assert(cmd.size() == 3);
 			break;
-		case Command_Ident:
-		case Command_Begin:
-		case Command_Draw:
+		case CommandType_Ident:
+		case CommandType_Begin:
+		case CommandType_Draw:
 		default:
 			Debug() << "D: Unrecognised command! \"" << cmd[0] << "\"";
 			exit(1);
