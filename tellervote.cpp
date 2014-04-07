@@ -1,30 +1,13 @@
-#include <algorithm>
 #include <cassert>
 #include <iostream>
 
 #include "card.h"
+#include "command.h"
 #include "debug.h"
 #include "player.h"
 #include "tellervote.h"
 
 std::vector<Player> _players;
-
-Command StringToCommand(const std::string &str)
-{
-	auto found = std::find(COMMAND_MAP.begin(), COMMAND_MAP.end(), str);
-	if (found == COMMAND_MAP.end()) return Command_Length;
-	int dist = found - COMMAND_MAP.begin();
-	return static_cast<Command>(dist);
-}
-
-std::string CommandToString(const Command cmd)
-{
-	if(cmd < Command_Length) {
-		return COMMAND_MAP[cmd];
-	} else {
-		return nullptr;
-	}
-}
 
 void MakeMove(int self_id)
 {
