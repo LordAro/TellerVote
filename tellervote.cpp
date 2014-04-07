@@ -1,59 +1,12 @@
 #include <cassert>
-#include <cstdlib>
-#include <ctime>
 #include <iostream>
-#include <limits>
-#include <sstream>
 
+#include "card.h"
 #include "debug.h"
 #include "player.h"
 #include "tellervote.h"
 
 std::vector<Player> _players;
-
-/* split functions stolen from http://stackoverflow.com/a/236803 */
-std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
-	std::stringstream ss(s);
-	std::string item;
-	while (std::getline(ss, item, delim)) {
-		elems.push_back(item);
-	}
-	return elems;
-}
-
-std::vector<std::string> split(const std::string &s, char delim) {
-	std::vector<std::string> elems;
-	split(s, delim, elems);
-	assert(elems.size() > 0); // Command should never be empty.
-	return elems;
-}
-
-/* Blocking */
-std::vector<std::string> GetCommand()
-{
-	std::string cmdstr;
-	std::getline(std::cin, cmdstr);
-	Debug() << cmdstr;
-	return split(cmdstr, ' ');
-}
-
-void RemoveCardAllPlayers(std::string cardstr)
-{
-	auto c = STR2CARDS.find(cardstr);
-	assert(c != STR2CARDS.end());
-	Card card = c->second;
-	for (auto player : _players) {
-		player.RemoveCard(card);
-	}
-}
-
-void DrawCard(int self_id)
-{
-	std::vector<std::string> cmd = GetCommand();
-	assert(cmd[0] == "draw" && cmd.size() == 2);
-	_players[self_id].hand.push_back(STR2CARDS.find(cmd[1])->second);
-	RemoveCardAllPlayers(cmd[1]);
-}
 
 void MakeMove(int self_id)
 {
@@ -62,11 +15,11 @@ void MakeMove(int self_id)
 	// It's our go, play a card
 	Card card;
 	for (auto c : _players[self_id].hand) {
-		if (c == Princess) continue;
+		if (c == Card_Princess) continue;
 		card = c;
 		break;
 	}
-	std::cout << "play " << CARDS2STR.find(card)->second << std::endl;
+	std::cout << "play " << CardToString(card) << std::endl;
 	std::cout.flush();
 
 	_players[self_id].RemoveCard(card);
@@ -75,12 +28,11 @@ void MakeMove(int self_id)
 
 int main()
 {
-	srand(time(0));
 	std::vector<std::string> cmd = GetCommand();
 	assert(cmd[0] == "ident" && cmd.size() == 4);
 	int self_id      = std::stoi(cmd[1]);
-	int num_players  = std::stoi(cmd[2]);
-	int first_player = std::stoi(cmd[3]);
+	/* First player turn unused */
+	int num_players  = std::stoi(cmd[3]);
 	for (int i = 0; i < num_players; i++) {
 		_players.emplace_back(i, i == self_id);
 	}

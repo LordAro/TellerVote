@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "tellervote.h"
@@ -20,5 +21,10 @@ public:
 };
 
 std::ostream &operator<<(std::ostream &os, const Player &p);
+
+std::vector<std::string> GetCommand();
+void RemoveCardAllPlayers(std::string cardstr);
+
+extern std::vector<Player> _players;
 
 #endif /* PLAYER_H */
