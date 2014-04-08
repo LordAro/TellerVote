@@ -20,12 +20,14 @@ Player::Player(int pos, bool self)
 /* Doesn't remove anything if it's not present (i.e. self) */
 void Player::RemoveCard(Card card)
 {
-	this->poss_cards.erase(std::remove(this->poss_cards.begin(), this->poss_cards.end(), card), this->poss_cards.end());
+	auto found = std::find(this->poss_cards.begin(), this->poss_cards.end(), card);
+	if (found != this->poss_cards.end()) this->poss_cards.erase(found);
 }
 
 void Player::RemoveHandCard(Card card)
 {
-	this->hand.erase(std::remove(this->hand.begin(), this->hand.end(), card), this->hand.end());
+	auto found = std::find(this->hand.begin(), this->hand.end(), card);
+	if (found != this->hand.end()) this->hand.erase(found);
 }
 
 std::ostream &operator<<(std::ostream &os, const Player &p)
