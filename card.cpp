@@ -29,5 +29,5 @@ void DrawCard(int self_id)
 	Card c = StringToCard(cmd.params[0]);
 	assert(c != Card_Length);
 	_players[self_id].hand.push_back(c);
-	RemoveCardAllPlayers(cmd.params[0]);
+	RemoveCardAllPlayers(c);
 }

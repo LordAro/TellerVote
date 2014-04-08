@@ -23,7 +23,7 @@ void MakeMove(int self_id)
 	std::cout << "play " << CardToString(card) << std::endl;
 	std::cout.flush();
 
-	_players[self_id].RemoveCard(card);
+	_players[self_id].RemoveHandCard(card);
 	// Handle changes to hand in the played cmd
 }
 
@@ -43,7 +43,7 @@ void CommandLoop(int self_id)
 				exit(0);
 			}
 			for (uint i = 1; i < cmd.params.size(); i++) {
-				// Remove cards from players possibilities
+				RemoveCardAllPlayers(StringToCard(cmd.params[i]));
 			}
 			break;
 		case CommandType_Player:

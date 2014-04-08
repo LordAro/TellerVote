@@ -17,9 +17,15 @@ Player::Player(int pos, bool self)
 	}
 }
 
+/* Doesn't remove anything if it's not present (i.e. self) */
 void Player::RemoveCard(Card card)
 {
 	this->poss_cards.erase(std::remove(this->poss_cards.begin(), this->poss_cards.end(), card), this->poss_cards.end());
+}
+
+void Player::RemoveHandCard(Card card)
+{
+	this->hand.erase(std::remove(this->hand.begin(), this->hand.end(), card), this->hand.end());
 }
 
 std::ostream &operator<<(std::ostream &os, const Player &p)
@@ -30,11 +36,10 @@ std::ostream &operator<<(std::ostream &os, const Player &p)
 	return os;
 }
 
-void RemoveCardAllPlayers(std::string cardstr)
+void RemoveCardAllPlayers(Card card)
 {
-	Card card = StringToCard(cardstr);
 	assert(card != Card_Length);
-	for (auto player : _players) {
+	for (auto &player : _players) {
 		player.RemoveCard(card);
 	}
 }

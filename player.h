@@ -2,7 +2,6 @@
 #define PLAYER_H
 
 #include <iostream>
-#include <string>
 #include <vector>
 
 #include "tellervote.h"
@@ -10,7 +9,10 @@
 class Player {
 public:
 	Player(int pos, bool self);
+	Player(const Player &rhs) = delete; // No sneaky copying!
+	Player(Player &&) = default;
 	void RemoveCard(Card card);
+	void RemoveHandCard(Card card);
 
 	bool is_self;
 	int position;
@@ -22,7 +24,7 @@ public:
 
 std::ostream &operator<<(std::ostream &os, const Player &p);
 
-void RemoveCardAllPlayers(std::string cardstr);
+void RemoveCardAllPlayers(Card cardstr);
 
 extern std::vector<Player> _players;
 
