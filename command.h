@@ -23,7 +23,7 @@ enum CommandType {
 	CommandType_Length
 };
 
-static const std::array<std::string, CommandType_Length> COMMANDTYPE_MAP = {{
+static const std::array<const char *, CommandType_Length> COMMANDTYPE_MAP = {{
 	"ident",
 	"player",
 	"draw",
