@@ -29,68 +29,75 @@ void MakeMove(int self_id)
 
 void CommandLoop(int self_id)
 {
-	std::vector<std::string> cmd = GetCommand();
+	Command cmd = GetCommand();
 
 	/* No switch for strings :( */
-	switch (StringToCommandType(cmd[0])) {
+	switch (cmd.type) {
 		case CommandType_Reveal:
-			assert(cmd.size() == 3);
+			assert(cmd.params.size() == 2);
 			break;
 		case CommandType_Out:
-			assert(cmd.size() >= 2 && cmd.size() <= 4);
-			if (std::stoi(cmd[1]) == self_id) {
+			assert(cmd.params.size() >= 1 && cmd.params.size() <= 3);
+			if (std::stoi(cmd.params[0]) == self_id) {
 				Debug() << "Oh noes, we lost!";
 				exit(0);
 			}
-			for (uint i = 2; i < cmd.size(); i++) {
+			for (uint i = 1; i < cmd.params.size(); i++) {
 				// Remove cards from players possibilities
 			}
 			break;
 		case CommandType_Player:
-			assert(cmd.size() == 2);
-			if (std::stoi(cmd[1]) != self_id) break;
+			assert(cmd.params.size() == 1);
+			if (std::stoi(cmd.params[0]) != self_id) break;
 
 			MakeMove(self_id);
 			break;
 		case CommandType_Played:
-			assert(cmd.size() >= 2 && cmd.size() <= 5);
-			// Remove played card (cmd[2]) from possibilities
+			assert(cmd.params.size() >= 1 && cmd.params.size() <= 4);
+			// Remove played card (cmd.params[1]) from possibilities
 			break;
 		case CommandType_Protected:
-			assert(cmd.size() == 2);
-			Debug() << "Dammit, didn't realise player " << cmd[1] << " was protected";
+			assert(cmd.params.size() == 1);
+			Debug() << "Dammit, didn't realise player " << cmd.params[0] << " was protected";
 			break;
 		case CommandType_Swap:
-			assert(cmd.size() == 2);
+			assert(cmd.params.size() == 1);
 			break;
 		case CommandType_Discard:
-			assert(cmd.size() == 3);
+			assert(cmd.params.size() == 2);
 			break;
+		/* These commands shouldn't happen here. */
 		case CommandType_Ident:
-		case CommandType_Begin:
+		case CommandType_Players:
+		case CommandType_Start:
 		case CommandType_Draw:
 		default:
-			Debug() << "D: Unrecognised command! \"" << cmd[0] << "\"";
+			Debug() << "D: Unrecognised command! \"" << cmd.type << "\"";
 			exit(1);
 	}
 }
 
 int main()
 {
-	std::vector<std::string> cmd = GetCommand();
-	assert(cmd[0] == "ident" && cmd.size() == 4);
-	int self_id      = std::stoi(cmd[1]);
-	/* First player turn unused */
-	int num_players  = std::stoi(cmd[3]);
-	for (int i = 0; i < num_players; i++) {
-		_players.emplace_back(i, i == self_id);
-	}
+	Command cmd = GetCommand();
+	assert(cmd.type == CommandType_Ident && cmd.params.size() == 1);
+	int self_id      = std::stoi(cmd.params[0]);
 	std::cout << "TellerVote" << std::endl;
 	std::cout.flush();
 
-	DrawCard(self_id);
 	cmd = GetCommand();
-	assert(cmd[0] == "begin");
+	assert(cmd.type == CommandType_Players && cmd.params.size() == 1);
+	int num_players  = std::stoi(cmd.params[0]);
+	for (int i = 0; i < num_players; i++) {
+		_players.emplace_back(i, i == self_id);
+	}
+
+	/* Firt turn player id unused */
+	cmd = GetCommand();
+	assert(cmd.type == CommandType_Start && cmd.params.size() == 1);
+
+	/* Draw first card */
+	DrawCard(self_id);
 
 	for (;;) CommandLoop(self_id);
 }

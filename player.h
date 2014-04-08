@@ -22,7 +22,6 @@ public:
 
 std::ostream &operator<<(std::ostream &os, const Player &p);
 
-std::vector<std::string> GetCommand();
 void RemoveCardAllPlayers(std::string cardstr);
 
 extern std::vector<Player> _players;

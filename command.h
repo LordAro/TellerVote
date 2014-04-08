@@ -6,7 +6,6 @@
 
 enum CommandType {
 	CommandType_Ident,
-	CommandType_Begin,
 	CommandType_Player,
 	CommandType_Draw,
 	CommandType_Swap,
@@ -15,6 +14,8 @@ enum CommandType {
 	CommandType_Discard,
 	CommandType_Out,
 	CommandType_Protected,
+	CommandType_Players,
+	CommandType_Start,
 
 	CommandType_Play,
 	CommandType_Forfeit,
@@ -24,7 +25,6 @@ enum CommandType {
 
 static const std::array<std::string, CommandType_Length> COMMANDTYPE_MAP = {{
 	"ident",
-	"begin",
 	"player",
 	"draw",
 	"swap",
@@ -33,6 +33,8 @@ static const std::array<std::string, CommandType_Length> COMMANDTYPE_MAP = {{
 	"discard",
 	"out",
 	"protected",
+	"players",
+	"start",
 
 	"play",
 	"forfeit"
@@ -41,5 +43,15 @@ static_assert(COMMANDTYPE_MAP.size() == CommandType_Length, "COMMANDTYPE_MAP.siz
 
 CommandType StringToCommandType(const std::string &str);
 std::string CommandTypeToString(const CommandType cmd);
+
+class Command {
+public:
+	Command(const std::string &cmdstr);
+
+	CommandType type;
+	std::vector<std::string> params;
+};
+
+Command GetCommand();
 
 #endif /* COMMAND_H */

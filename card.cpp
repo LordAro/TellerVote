@@ -2,6 +2,7 @@
 #include <algorithm>
 
 #include "card.h"
+#include "command.h"
 #include "player.h"
 
 Card StringToCard(const std::string &str)
@@ -23,10 +24,10 @@ std::string CardToString(const Card card)
 
 void DrawCard(int self_id)
 {
-	std::vector<std::string> cmd = GetCommand();
-	assert(cmd[0] == "draw" && cmd.size() == 2);
-	Card c = StringToCard(cmd[1]);
+	Command cmd = GetCommand();
+	assert(cmd.type == CommandType_Draw && cmd.params.size() == 1);
+	Card c = StringToCard(cmd.params[0]);
 	assert(c != Card_Length);
 	_players[self_id].hand.push_back(c);
-	RemoveCardAllPlayers(cmd[1]);
+	RemoveCardAllPlayers(cmd.params[0]);
 }
